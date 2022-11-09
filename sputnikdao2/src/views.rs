@@ -142,3 +142,23 @@ impl Contract {
         self.bounty_claims_count.get(&id).unwrap_or_default()
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use near_sdk::test_utils::{accounts, VMContextBuilder};
+    use near_sdk::testing_env;
+
+    use super::*;
+
+    #[test]
+    fn get_version() {
+        let mut context = VMContextBuilder::new();
+        testing_env!(context.predecessor_account_id(accounts(1)).build());
+        let contract = Contract::new(
+            Config::test_config(),
+            VersionedPolicy::Default(vec![accounts(1).into(), accounts(2).into()]),
+        );
+
+        assert_eq!(contract.version(), env!("CARGO_PKG_VERSION"))
+    }
+}
