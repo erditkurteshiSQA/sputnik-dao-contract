@@ -173,4 +173,16 @@ mod tests {
 
         assert_eq!(contract.get_config(), contract.config.get().unwrap().clone())
     }
+
+    #[test]
+    fn get_policy() {
+        let mut context = VMContextBuilder::new();
+        testing_env!(context.predecessor_account_id(accounts(1)).build());
+        let contract = Contract::new(
+            Config::test_config(),
+            VersionedPolicy::Default(vec![accounts(1).into(), accounts(2).into()]),
+        );
+
+        assert_eq!(contract.get_policy(), contract.policy.get().unwrap().to_policy().clone())
+    }
 }
