@@ -185,4 +185,18 @@ mod tests {
 
         assert_eq!(contract.get_policy(), contract.policy.get().unwrap().to_policy().clone())
     }
+
+    #[test]
+    fn get_locked_storage_amount() {
+        let mut context = VMContextBuilder::new();
+        testing_env!(context.predecessor_account_id(accounts(1)).build());
+        let mut contract = Contract::new(
+            Config::test_config(),
+            VersionedPolicy::Default(vec![accounts(1).into(), accounts(2).into()]),
+        );
+
+        let locked_storage_amount = env::storage_byte_cost() * (env::storage_usage() as u128);
+
+        assert_eq!(contract.get_locked_storage_amount(), U128(locked_storage_amount));
+    }
 }
