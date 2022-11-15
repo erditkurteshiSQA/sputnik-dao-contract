@@ -151,7 +151,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn get_version() {
+    fn test_get_version() {
         let mut context = VMContextBuilder::new();
         testing_env!(context.predecessor_account_id(accounts(1)).build());
         let contract = Contract::new(
@@ -163,7 +163,7 @@ mod tests {
     }
 
     #[test]
-    fn get_config() {
+    fn test_get_config() {
         let mut context = VMContextBuilder::new();
         testing_env!(context.predecessor_account_id(accounts(1)).build());
         let contract = Contract::new(
@@ -175,7 +175,7 @@ mod tests {
     }
 
     #[test]
-    fn get_policy() {
+    fn test_get_policy() {
         let mut context = VMContextBuilder::new();
         testing_env!(context.predecessor_account_id(accounts(1)).build());
         let contract = Contract::new(
@@ -187,7 +187,7 @@ mod tests {
     }
 
     #[test]
-    fn get_locked_storage_amount() {
+    fn test_get_locked_storage_amount() {
         let mut context = VMContextBuilder::new();
         testing_env!(context.predecessor_account_id(accounts(1)).build());
         let mut contract = Contract::new(
