@@ -199,4 +199,16 @@ mod tests {
 
         assert_eq!(contract.get_locked_storage_amount(), U128(locked_storage_amount));
     }
+
+    #[test]
+    fn test_get_available_amount() {
+        let mut context = VMContextBuilder::new();
+        testing_env!(context.predecessor_account_id(accounts(1)).build());
+        let mut contract = Contract::new(
+            Config::test_config(),
+            VersionedPolicy::Default(vec![accounts(1).into(), accounts(2).into()]),
+        );
+
+        assert_eq!(contract.get_available_amount(), U128(env::account_balance() - contract.get_locked_storage_amount().0 - contract.locked_amount))
+    }
 }
