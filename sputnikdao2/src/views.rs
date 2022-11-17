@@ -223,4 +223,16 @@ mod tests {
 
         assert_eq!(contract.delegation_total_supply(), U128(contract.total_delegation_amount))
     }
+
+    #[test]
+    fn test_get_last_bounty_id() {
+        let mut context = VMContextBuilder::new();
+        testing_env!(context.predecessor_account_id(accounts(1)).build());
+        let contract = Contract::new(
+            Config::test_config(),
+            VersionedPolicy::Default(vec![accounts(1).into(), accounts(2).into()]),
+        );
+
+        assert_eq!(contract.get_last_bounty_id(), contract.last_bounty_id)
+    }
 }
