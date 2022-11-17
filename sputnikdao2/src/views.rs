@@ -235,4 +235,18 @@ mod tests {
 
         assert_eq!(contract.get_last_bounty_id(), contract.last_bounty_id)
     }
+
+    #[test]
+    fn test_get_bounty_number_of_claims() {
+        let mut context = VMContextBuilder::new();
+        testing_env!(context.predecessor_account_id(accounts(1)).build());
+        let contract = Contract::new(
+            Config::test_config(),
+            VersionedPolicy::Default(vec![accounts(1).into(), accounts(2).into()]),
+        );
+
+        let id = 1;
+
+        assert_eq!(contract.get_bounty_number_of_claims(id), contract.bounty_claims_count.get(&id).unwrap_or_default())
+    }
 }
