@@ -237,6 +237,18 @@ mod tests {
     }
 
     #[test]
+    fn test_delegation_balance_of() {
+        let mut context = VMContextBuilder::new();
+        testing_env!(context.predecessor_account_id(accounts(1)).build());
+        let contract = Contract::new(
+            Config::test_config(),
+            VersionedPolicy::Default(vec![accounts(1).into(), accounts(2).into()]),
+        );
+
+        assert_eq!(contract.delegation_balance_of(accounts(1)), U128(contract.delegations.get(&accounts(1)).unwrap_or_default()))
+    }
+
+    #[test]
     fn test_get_bounty_number_of_claims() {
         let mut context = VMContextBuilder::new();
         testing_env!(context.predecessor_account_id(accounts(1)).build());
