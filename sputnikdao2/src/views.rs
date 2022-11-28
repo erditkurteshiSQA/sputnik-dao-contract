@@ -186,6 +186,19 @@ mod tests {
         assert_eq!(contract.get_policy(), contract.policy.get().unwrap().to_policy().clone())
     }
 
+    // Work in progress test_get_staking_contract()
+    #[test]
+    fn test_get_staking_contract() {
+        let mut context = VMContextBuilder::new();
+        testing_env!(context.predecessor_account_id(accounts(1)).build());
+        let contract = Contract::new(
+            Config::test_config(),
+            VersionedPolicy::Default(vec![accounts(1).into(), accounts(2).into()]),
+        );
+
+        assert_eq!(contract.get_staking_contract(), contract.staking_id.map(String::from).unwrap_or_default())
+    }
+
     #[test]
     fn test_get_locked_storage_amount() {
         let mut context = VMContextBuilder::new();
@@ -261,4 +274,18 @@ mod tests {
 
         assert_eq!(contract.get_bounty_number_of_claims(id), contract.bounty_claims_count.get(&id).unwrap_or_default())
     }
+
+    #[test]
+    #[should_panic(expected = "ERR_NO_BOUNTY")]
+    fn test_get_bounty() {
+        let mut context = VMContextBuilder::new();
+        testing_env!(context.predecessor_account_id(accounts(1)).build());
+        let contract = Contract::new(
+            Config::test_config(),
+            VersionedPolicy::Default(vec![accounts(1).into(), accounts(2).into()]),
+        );
+
+        contract.get_bounty(1);
+    }
+
 }
